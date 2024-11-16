@@ -1,16 +1,16 @@
 <?php
-    require_once 'app/view/apiView.php';
-    abstract class controller {
+    require_once 'app/view/json_View.php';
+        class controller {
         protected $view;
-        private $datos;
+        private $data;
 
         public function __construct(){
 
-            $this->view = new apiView();
-            $this->datos = file_get_contents('php://input');
+            $this->view = new jsonView();
+            $this->data = file_get_contents('php://input');
         }
 
-        function datos(){
-            return json_decode($this->datos);
+        function getData(){
+            return json_decode($this->data);
         }
     }
