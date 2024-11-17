@@ -11,6 +11,6 @@ $router-> addRoute('juegos',        'GET',    'juegoController', 'getAll'       
 $router-> addRoute('juegos/:order', 'GET',    'juegoController', 'getAllSorted' );
 $router-> addRoute('juego/:id',     'GET',    'juegoController', 'get'          );
 $router-> addRoute('juego/:id',     'PUT',    'juegoController', 'modify'       );
-
+$router-> addRoute('juego',         'POST',   'juegoController', 'create'       );
     
 $router->route($_GET['resource'], $_SERVER['REQUEST_METHOD']); 

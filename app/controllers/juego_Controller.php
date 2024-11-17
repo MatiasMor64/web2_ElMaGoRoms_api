@@ -9,7 +9,6 @@ class juegoController extends controller{
         protected $view;
         public function __construct() {
             parent::__construct();
-            $this->view = new jsonView();
             $this->model = new juegosModel();
         }
 
@@ -41,34 +40,82 @@ class juegoController extends controller{
     public function modify($request){
         $id = $request->params->id;
         if (!isset($request->body->nombre) || 
+            !isset($request->body->imagen) ||
             !isset($request->body->descripción) || 
-            !isset($request->body->ID_plat) || 
-            !isset($request->body->ID_cat)) {
+            !isset($request->body->plataforma) || 
+            !isset($request->body->categoria)) {
             return $this->view->response(['error' => 'Falta completar datos'], 400);
         }
 
         $juego = [
             'nombre' => $request->body->nombre,
+            'imagen' => $request->body->imagen,
             'descripción' => $request->body->descripción,
-            'ID_plat' => $request->body->ID_plat,
-            'ID_cat' => $request->body->ID_cat
+            'plataforma' => $request->body->plataforma,
+            'categoria' => $request->body->categoria
         ];
 
-        $checkPlat= $this->model->getPlat($juego['ID_plat']);
-        $checkCat= $this->model->getCat($juego['ID_cat']);
+        $checkPlat= $this->model->getPlat($juego['plataforma']);
+        $checkCat= $this->model->getCat($juego['categoria']);
 
-
-        if(($checkPlat->consola == $juego['ID_plat']) && ($checkCat->categoría == $juego['ID_cat'])){
-            $juego['ID_plat']= $checkPlat->ID_plat;
-            $juego['ID_cat']= $checkCat->ID_cat;
-            if ($this->model->modify($id, $juego)) {
-                $this->view->response(['success' => 'se actualizo el juego correctamente'], 200);
+        if((!empty($checkPlat)) && ((!empty($checkCat)))){ 
+            if(($checkPlat->consola == $juego['plataforma']) && ($checkCat->categoría == $juego['categoria'])){
+                $juego['plataforma']= $checkPlat->ID_plat;
+                $juego['categoria']= $checkCat->ID_cat;
+                if ($this->model->modify($id, $juego)) {
+                    $this->view->response(['success' => 'se actualizo el juego correctamente'], 200);
+                } else {
+                    $this->view->response(['error' => 'juego no encontrado'], 404); 
+                }
             } else {
-                $this->view->response(['error' => 'juego no encontrado'], 404); 
+                $this->view->response(['error' => 'variables parecidas pero erroneas, checkear como esta escrita la data'], 400); 
+            }
+        } else {
+            $this->view->response(['error' => 'variables de categoria o plataforma erroneamente aplicados, intente de nuevo'], 400); 
+        }
+    }
+
+    public function create($request){
+        if (!isset($request->body->nombre) || 
+            !isset($request->body->descripción) || 
+            !isset($request->body->imagen) ||
+            !isset($request->body->plataforma) || 
+            !isset($request->body->categoria)) {
+            return $this->view->response(['error' => 'Falta completar datos'], 400);
+        } 
+
+        $juego = [
+            'nombre' => $request->body->nombre,
+            'descripción' => $request->body->descripción,
+            'imagen' => $request->body->imagen,
+            'usuario' => $request->body->usuario,
+            'plataforma' => $request->body->plataforma,
+            'categoria' => $request->body->categoria
+        ];
+        $dataUsu= $this->model->getUsu($juego['usuario']);
+
+        if(empty($dataUsu)){
+            $this->model->createUsu($juego['usuario']);
+        }
+
+        $dataPlat= $this->model->getPlat($juego['plataforma']);
+        $dataCat= $this->model->getCat($juego['categoria']);
+
+        if((!empty($dataPlat)) && ((!empty($dataCat)))){ 
+            if(($dataPlat->consola == $juego['plataforma']) && ($dataCat->categoría == $juego['categoria'])){
+                $juego['plataforma']= $dataPlat->ID_plat;
+                $juego['categoria']= $dataCat->ID_cat;
+                $juego['usuario']= $dataUsu->ID_usuario;
+                if ($this->model->create($juego)) {
+                    $this->view->response(['success' => 'se creo un juego correctamente'], 201);
+                } else {
+                    $this->view->response(['error' => 'algo fallo en el proceso, intentelo de nuevo'], 404); 
+                }
+            } else {
+                $this->view->response(['error' => 'variables parecidas pero erroneas, checkear como esta escrita la data'], 400); 
             }
         } else {
             $this->view->response(['error' => 'variables de categoria o plataforma erroneamente aplicados, intente de nuevo'], 400); 
         }
     }
 }
-
