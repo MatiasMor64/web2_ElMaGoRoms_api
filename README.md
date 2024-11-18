@@ -74,7 +74,7 @@ Crea un nuevo juego.
   "descripción": "Juego clásico de la Nintendo DS, el culmen de la 4ta generación de Pokémon.",
   "imagen": "imagen HTML de Pokémon Platino",
   "usuario": "APICreator",
-  "plataforma": "Nintendo DS",
+  "plataforma": "Nintendo Ds",
   "categoria": "Aventura"
 }
 
