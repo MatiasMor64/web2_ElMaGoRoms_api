@@ -24,6 +24,7 @@ Ordena el listado general en forma alfabética, según si es descendente o ascen
 
 - Ascendente:
   ---> http://localhost/web2_ElMaGoRoms_api-main/api/juegos/asc
+  
 - Descendente:  
   ---> http://localhost/web2_ElMaGoRoms_api-main/api/juegos/desc
 
@@ -78,6 +79,12 @@ Crea un nuevo juego.
 }
 
 ```
+
+## Notas a tener en cuenta:
+
+- Para poder crear y modificar, los codigos de plataforma y categoria deben ser exactos tal cual lo que aparece en la base de datos, cualquier cambio, incluso cambiar una mayuscula, resultara en el codigo fallando
+
+- Lo mismo no sucede en el crear usuarios, por otra parte, el codigo permite que se cree un usuario nuevo, pero requiere que se ingrese la data del juego a crear de nuevo una vez se crea el usuario
 
 # Autores
 Este proyecto fue realizado por Matías Morcillo (matiasmorcillo128@gmail.com) y Iago Medina Durán (iagomduran@gmail.com).
