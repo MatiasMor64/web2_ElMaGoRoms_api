@@ -92,30 +92,31 @@ class juegoController extends controller{
             'plataforma' => $request->body->plataforma,
             'categoria' => $request->body->categoria
         ];
+        
         $dataUsu= $this->model->getUsu($juego['usuario']);
-
-        if(empty($dataUsu)){
-            $this->model->createUsu($juego['usuario']);
-        }
-
         $dataPlat= $this->model->getPlat($juego['plataforma']);
         $dataCat= $this->model->getCat($juego['categoria']);
 
-        if((!empty($dataPlat)) && ((!empty($dataCat)))){ 
-            if(($dataPlat->consola == $juego['plataforma']) && ($dataCat->categoría == $juego['categoria'])){
-                $juego['plataforma']= $dataPlat->ID_plat;
-                $juego['categoria']= $dataCat->ID_cat;
-                $juego['usuario']= $dataUsu->ID_usuario;
-                if ($this->model->create($juego)) {
-                    $this->view->response(['success' => 'se creo un juego correctamente'], 201);
+        if(!empty($dataUsu)){
+            if((!empty($dataPlat)) && ((!empty($dataCat)))){ 
+                if(($dataPlat->consola == $juego['plataforma']) && ($dataCat->categoría == $juego['categoria'])){
+                    $juego['plataforma']= $dataPlat->ID_plat;
+                    $juego['categoria']= $dataCat->ID_cat;
+                    $juego['usuario']= $dataUsu->ID_usuario;
+                    if ($this->model->create($juego)) {
+                        $this->view->response(['success' => 'se creo un juego correctamente'], 201);
+                    } else {
+                        $this->view->response(['error' => 'algo fallo en el proceso, intentelo de nuevo'], 404); 
+                    }
                 } else {
-                    $this->view->response(['error' => 'algo fallo en el proceso, intentelo de nuevo'], 404); 
+                    $this->view->response(['error' => 'variables parecidas pero erroneas, checkear como esta escrita la data'], 400); 
                 }
             } else {
-                $this->view->response(['error' => 'variables parecidas pero erroneas, checkear como esta escrita la data'], 400); 
+                $this->view->response(['error' => 'variables de categoria o plataforma erroneamente aplicados, intente de nuevo'], 400); 
             }
         } else {
-            $this->view->response(['error' => 'variables de categoria o plataforma erroneamente aplicados, intente de nuevo'], 400); 
+            $this->model->createUsu($juego['usuario']);
+            $this->view->response(['error' => 'el usuario ingresado no existia asi que se procede a crear. Intente ingresar la informacion de nuevo'], 400); 
         }
     }
 }
