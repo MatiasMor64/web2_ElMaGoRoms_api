@@ -14,14 +14,14 @@ class juegoController extends controller{
 
     public function getAll(){
         $juegos= $this->model->getAll();
-        return $this->view->response($juegos, 200);
+        return $this->view->response($juegos);
     }
 
     public function getAllSorted($request) {
         $order = $request->params->order;
         if(($order== 'asc') || ($order== 'desc')){
             $juegos = $this->model->getAllSortedByName($order);
-            return $this->view->response($juegos, 200);
+            return $this->view->response($juegos);
         } else {
             return $this->view->response("el valor ingresado de order no es el correcto, recuerde usar 'asc' o 'desc'", 400);
         }
@@ -31,7 +31,7 @@ class juegoController extends controller{
         $id= $request->params->id;
         $juego = $this->model->get($id);
         if ($juego){
-            return $this->view->response($juego, 200);
+            return $this->view->response($juego);
         } else {
             return $this->view->response("No existe el juego con el id= " . $id, 404);
         }
@@ -79,6 +79,7 @@ class juegoController extends controller{
         if (!isset($request->body->nombre) || 
             !isset($request->body->descripción) || 
             !isset($request->body->imagen) ||
+            !isset($request->body->usuario) ||
             !isset($request->body->plataforma) || 
             !isset($request->body->categoria)) {
             return $this->view->response(['error' => 'Falta completar datos'], 400);
