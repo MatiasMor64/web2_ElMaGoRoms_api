@@ -24,7 +24,6 @@ Ordena el listado general en forma alfabética, según si es descendente o ascen
 
 - Ascendente:
   ---> http://localhost/web2_ElMaGoRoms_api-main/api/juegos/asc
-                          o
 - Descendente:  
   ---> http://localhost/web2_ElMaGoRoms_api-main/api/juegos/desc
 
@@ -80,5 +79,5 @@ Crea un nuevo juego.
 
 ```
 
-#Autores
+# Autores
 Este proyecto fue realizado por Matías Morcillo (matiasmorcillo128@gmail.com) y Iago Medina Durán (iagomduran@gmail.com).
