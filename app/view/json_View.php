@@ -1,6 +1,6 @@
 <?php
     class jsonView {
-        public function response($data, $status) {
+        public function response($data, $status = 200) {
             header("Content-Type: application/json");
             $statusText = $this->_requestStatus($status);
             header("HTTP/1.1 $status $statusText");
